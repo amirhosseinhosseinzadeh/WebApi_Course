@@ -157,3 +157,5 @@ $RECYCLE.BIN/
 
 # Mac crap
 .DS_Store
+# Hotel listing project defaults
+HotelListing/Logs/*

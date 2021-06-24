@@ -28,9 +28,15 @@ namespace HotelListing
         {
 
             services.AddControllers();
+            services.AddCors(o=>{
+                o.AddPolicy("PublicPolicy",builder =>
+                    builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HotelListing", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo{Title="HotelListing",Version="1.0"});
             });
         }
 
@@ -40,16 +46,14 @@ namespace HotelListing
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HotelListing v1"));
             }
-
+            
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HotelListing v1"));
             app.UseHttpsRedirection();
-
+            app.UseCors("PublicPolicy");
             app.UseRouting();
-
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
