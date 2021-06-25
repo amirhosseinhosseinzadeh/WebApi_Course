@@ -11,6 +11,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
+using HotelListing.Data;
 
 namespace HotelListing
 {
@@ -37,6 +40,10 @@ namespace HotelListing
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo{Title="HotelListing",Version="1.0"});
+            });
+            services.AddDbContext<DataBaseContext>(options=>
+            {
+                options.UseSqlServer(Configuration.GetConnectionString("AppConnection"));
             });
         }
 
