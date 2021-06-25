@@ -159,3 +159,4 @@ $RECYCLE.BIN/
 .DS_Store
 # Hotel listing project defaults
 HotelListing/Logs/*
+Migrations/
