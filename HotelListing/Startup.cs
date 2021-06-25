@@ -14,6 +14,8 @@ using Microsoft.OpenApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.SqlServer;
 using HotelListing.Data;
+using AutoMapper;
+using HotelListing.Configurations;
 
 namespace HotelListing
 {
@@ -45,6 +47,7 @@ namespace HotelListing
             {
                 options.UseSqlServer(Configuration.GetConnectionString("AppConnection"));
             });
+            services.AddAutoMapper(typeof(MapperInitializer));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
