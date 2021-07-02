@@ -6,7 +6,7 @@ namespace HotelListing.Configurations
 {
     public class MapperInitializer : Profile
     {
-        public MapperInitializer(string profileName) : base(profileName)
+        public MapperInitializer() 
         {
             CreateMap<Country, CountryModel>().ReverseMap();
             CreateMap<Country, CreateCountryModel>().ReverseMap();

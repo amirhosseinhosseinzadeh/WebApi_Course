@@ -8,15 +8,15 @@ namespace HotelListing.IRepository
 {
     public interface IGenericRepository<T> where T : class
     {
-        Task<IList<T>> GetAll(Expression<Func<T, bool>> expression = null,
+        Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> expression = null,
              Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
              IList<string> includes = null);
 
-        Task<T> Get(Expression<Func<T, bool>> expression, IList<string> includes = null);
+        Task<T> GetAsync(Expression<Func<T, bool>> expression, IList<string> includes = null);
 
-        Task Insert (T entity);
+        Task InsertAsync (T entity);
 
-        Task InsertRaneg(IEnumerable<T> entities);
+        Task InsertRanegAsync(IEnumerable<T> entities);
 
         Task Delete(int id);
 

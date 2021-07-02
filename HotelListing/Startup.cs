@@ -16,6 +16,10 @@ using Microsoft.EntityFrameworkCore.SqlServer;
 using HotelListing.Data;
 using AutoMapper;
 using HotelListing.Configurations;
+using HotelListing.IRepository;
+using HotelListing.Repository;
+using System.Reflection;
+using Serilog;
 
 namespace HotelListing
 {
@@ -31,23 +35,25 @@ namespace HotelListing
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddLogging(option => option.AddSerilog());
             services.AddControllers();
-            services.AddCors(o=>{
-                o.AddPolicy("PublicPolicy",builder =>
-                    builder.AllowAnyOrigin()
-                    .AllowAnyMethod()
-                    .AllowAnyHeader());
+            services.AddCors(o =>
+            {
+                o.AddPolicy("PublicPolicy", builder =>
+                     builder.AllowAnyOrigin()
+                     .AllowAnyMethod()
+                     .AllowAnyHeader());
             });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo{Title="HotelListing",Version="1.0"});
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HotelListing", Version = "1.0" });
             });
-            services.AddDbContext<DataBaseContext>(options=>
+            services.AddDbContext<DataBaseContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("AppConnection"));
             });
-            services.AddAutoMapper(typeof(MapperInitializer));
+            services.AddAutoMapper(Assembly.GetAssembly(typeof(MapperInitializer)));
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,10 +63,14 @@ namespace HotelListing
             {
                 app.UseDeveloperExceptionPage();
             }
-            
+
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HotelListing v1"));
-            app.UseHttpsRedirection();
+
+#if (!DEBUG)
+                app.UseHttpsRedirection();
+#endif
+
             app.UseCors("PublicPolicy");
             app.UseRouting();
             app.UseAuthorization();

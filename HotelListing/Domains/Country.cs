@@ -11,7 +11,7 @@ namespace HotelListing.Domains
         
         public string ShortName { get; set; }
 
-        [NotMapped]
+        // [NotMapped]
         public virtual IList<Hotel> HotelList { get; set; }
     }
 }

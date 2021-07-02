@@ -30,7 +30,7 @@ namespace HotelListing.Repository
             _db.RemoveRange(entities);
         }
 
-        public async Task<IList<T>> GetAll(Expression<Func<T, bool>> expression = null,
+        public async Task<IList<T>> GetAllAsync(Expression<Func<T, bool>> expression = null,
              Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
              IList<string> includes = null)
         {
@@ -51,7 +51,7 @@ namespace HotelListing.Repository
             return await query.AsNoTracking().ToListAsync();
         }
 
-        public async Task<T> Get(Expression<Func<T, bool>> expression, IList<string> includes = null)
+        public async Task<T> GetAsync(Expression<Func<T, bool>> expression, IList<string> includes = null)
         {
             IQueryable<T> query = _db;
 
@@ -65,12 +65,12 @@ namespace HotelListing.Repository
             return await query.AsNoTracking().FirstOrDefaultAsync(expression);
         }
 
-        public async Task Insert(T entity)
+        public async Task InsertAsync(T entity)
         {
             await _db.AddAsync(entity);
         }
 
-        public async Task InsertRaneg(IEnumerable<T> entities)
+        public async Task InsertRanegAsync(IEnumerable<T> entities)
         {
             await _db.AddRangeAsync(entities);
         }
