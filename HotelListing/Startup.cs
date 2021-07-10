@@ -20,6 +20,9 @@ using HotelListing.IRepository;
 using HotelListing.Repository;
 using System.Reflection;
 using Serilog;
+using Microsoft.AspNetCore.Identity;
+using HotelListing.Extensions;
+using HotelListing.Services;
 
 namespace HotelListing
 {
@@ -35,6 +38,7 @@ namespace HotelListing
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication();
             services.AddLogging(option => option.AddSerilog());
             services.AddControllers();
             services.AddCors(o =>
@@ -54,6 +58,9 @@ namespace HotelListing
             });
             services.AddAutoMapper(Assembly.GetAssembly(typeof(MapperInitializer)));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.ConfigureIdentity();
+            services.ConfigureJwt(Configuration);
+            services.AddScoped<IAuthManager , AuthManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,6 +81,7 @@ namespace HotelListing
             app.UseCors("PublicPolicy");
             app.UseRouting();
             app.UseAuthorization();
+            app.UseAuthentication();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
